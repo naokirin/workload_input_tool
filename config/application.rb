@@ -36,6 +36,11 @@ module WorkloadInputTool
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
 
+    # Load package paths
+    config.paths.add 'packages', glob: '*/{app/*,app/*/concerns,lib/*}', eager_load: true
+
+    config.i18n.default_locale = :ja
+
     # Don't generate system test files.
     config.generators.system_tests = nil
   end

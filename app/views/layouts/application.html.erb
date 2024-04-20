@@ -7,9 +7,23 @@
     <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
   </head>
 
   <body>
+    <header style="margin-top:30px;">
+      <nav>
+        <% if user_account_signed_in? %>
+          <p>ログインユーザー: <strong><%= current_user_account.email %></strong>.</p>
+          <%= link_to "ログアウト", destroy_user_account_session_path, method: :delete, turbo: true, data: { turbo_method: :delete} %>
+        <% else %>
+          <%= link_to "新規登録", new_user_account_registration_path	%> |
+          <%= link_to "ログイン", new_user_account_session_path %>
+        <% end %>
+      </nav>
+    </header>
+    <p class="notice"><%= notice %></p>
+    <p class="alert"><%= alert %></p>
     <%= yield %>
   </body>
 </html>

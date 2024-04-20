@@ -40,6 +40,9 @@ gem 'arproxy'
 gem 'grpc'
 gem 'grpc-tools'
 
+gem 'devise'
+gem 'devise-i18n'
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ]
@@ -50,6 +53,8 @@ end
 group :development do
   gem 'rubocop-rails', require: false
   gem 'rubocop-rspec', require: false
+
+  gem 'letter_opener_web'
 
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
