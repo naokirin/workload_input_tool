@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-module User
+module <%= @package_name.camelize %>
   def self.table_name_prefix
-    "user_"
+    "<%=  @package_name %>_"
   end
 end
