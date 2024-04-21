@@ -37,8 +37,6 @@ gem "bootsnap", require: false
 
 gem 'packwerk'
 gem 'arproxy'
-gem 'grpc'
-gem 'grpc-tools'
 
 gem 'devise'
 gem 'devise-i18n'
