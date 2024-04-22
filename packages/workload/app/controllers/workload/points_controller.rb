@@ -21,7 +21,8 @@ module Workload
 
       build_form(points, target_month)
 
-      Rails.logger.debug(@form.points)
+      @month_range = (target_month.begin.to_datetime..target_month.end.to_datetime)
+      @workload_groups = Workload::Group.all
     end
 
     def create

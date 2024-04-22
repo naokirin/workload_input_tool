@@ -1,20 +1,29 @@
-<h1>WorkloadPoint#index</h1>
-<p>Find me in app/views/workload/points/index.html.erb</p>
-
+<h1><%= @month_range.begin.strftime('%Y年%-m月') %>の工数</h1>
 <%= form_with model: @form ,url: workload_points_path, local: false, method: :post, turbo: true, data: { turbo_method: :post } do |f| %>
-  <%= f.fields_for :points do |point| %>
-    <div>
-      <%= point.object.date %>
-      <%= point.hidden_field :date, value: point.object.date %>
-    </div>
-    <div>
-      <%= point.object.workload_group&.title  %>
-      <%= point.hidden_field :workload_group_id, value: point.object.workload_group_id %>
-    </div>
-    <div>
-      <%= point.text_field :value, value: point.object.value %>
-    </div>
-  <% end %>
+  <table style="table-layout: fixed;">
+    <thead>
+      <tr>
+        <th scope="col"></th>
+        <% @month_range.each do |date| %>
+          <th scope="col" style="max-width: 150px; font-size: 11px;"><%= date.strftime('%m/%d') %></th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <% @workload_groups.each do |group| %>
+        <tr>
+          <th scope="row" style="white-space: nowrap;"><%= group.title %></th>
+          <%= f.fields_for :points, @form.points.select { |point| point.workload_group_id == group.id }.sort_by(&:date) do |point| %>
+            <td style="max-width: 150px;">
+              <%= point.hidden_field :date, value: point.object.date %>
+              <%= point.hidden_field :workload_group_id, value: point.object.workload_group_id %>
+              <%= point.text_field :value, value: point.object.value, style: 'width: 80%; margin: auto;' %>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
   <div>
     <%= f.submit "保存" %>
   </div>
