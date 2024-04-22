@@ -1,0 +1,21 @@
+<h1>WorkloadPoint#index</h1>
+<p>Find me in app/views/workload/points/index.html.erb</p>
+
+<%= form_with model: @form ,url: workload_points_path, local: false, method: :post, turbo: true, data: { turbo_method: :post } do |f| %>
+  <%= f.fields_for :points do |point| %>
+    <div>
+      <%= point.object.date %>
+      <%= point.hidden_field :date, value: point.object.date %>
+    </div>
+    <div>
+      <%= point.object.workload_group&.title  %>
+      <%= point.hidden_field :workload_group_id, value: point.object.workload_group_id %>
+    </div>
+    <div>
+      <%= point.text_field :value, value: point.object.value %>
+    </div>
+  <% end %>
+  <div>
+    <%= f.submit "保存" %>
+  </div>
+<% end %>

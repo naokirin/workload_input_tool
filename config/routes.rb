@@ -9,5 +9,9 @@ Rails.application.routes.draw do
   # Defines the root path route ("/"
   root to: 'home#index'
 
+  namespace :workload do
+    resources :points, only: %i[index create]
+  end
+
   mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
 end
