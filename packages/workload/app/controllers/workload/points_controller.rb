@@ -42,7 +42,11 @@ module Workload
         Workload::Point.transaction do
           @form.save!
         end
-        redirect_to workload_points_path, notice: '工数を更新しました！'
+        if points.first.date.beginning_of_month == Time.zone.now.beginning_of_month
+          redirect_to workload_points_path, notice: '工数を更新しました！'
+        else
+          redirect_to workload_points_path(month: points.first.date.beginning_of_month.strftime('%Y-%m')), notice: '工数を更新しました！'
+        end
       else
         flash[:alert] = '入力内容に誤りがあります'
         render :index
