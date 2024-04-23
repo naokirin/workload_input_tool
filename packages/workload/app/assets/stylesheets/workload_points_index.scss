@@ -1,0 +1,39 @@
+table.workload-points__table {
+    table-layout: fixed;
+    border-collapse: collapse;
+    border: 1px solid;
+    font-size: 11px;
+
+    tbody {
+        tr {
+            height: 30px;
+        }
+    }
+
+    th, td {
+        position:relative;
+        border: 1px solid;
+    }
+
+    th.workload-points__th--date-column,
+    td.workload-points__td--date-column {
+        max-width: 140px;
+        min-width: 50px;
+    }
+
+    th.workload-points__th--group-column {
+        min-width: 200px;
+    }
+}
+
+.workload-points__input--value {
+    position:absolute;
+    margin: auto;
+    width: calc(100% - 10px);
+    height: calc(100% - 10px);
+    top: 2px;
+    text-align: center;
+}
+
+
+

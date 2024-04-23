@@ -1,26 +1,30 @@
+<%= content_for :css do %>
+  <%= stylesheet_link_tag 'workload_points_index', 'data-turbo-track': 'reload' %>
+<% end %>
+
 <% 12.times.map { |i| Date.current.beginning_of_month - i.months }.each do |month| %>
   <%= link_to month.strftime('%Y年%-m月'), workload_points_path(month: month.strftime('%Y-%m')) %>
 <% end %>
 <h1><%= @month_range.begin.strftime('%Y年%-m月') %>の工数</h1>
 <%= form_with model: @form ,url: workload_points_path, local: false, method: :post, turbo: true, data: { turbo_method: :post } do |f| %>
-  <table style="table-layout: fixed;">
+  <table class="workload-points__table">
     <thead>
       <tr>
-        <th scope="col"></th>
+        <th scope="col" class="workload-points__th--group-column"></th>
         <% @month_range.each do |date| %>
-          <th scope="col" style="max-width: 150px; font-size: 11px;"><%= date.strftime('%m/%d') %></th>
+          <th scope="col" class="workload-points__th--date-column"><%= date.strftime('%m/%d') %></th>
         <% end %>
       </tr>
     </thead>
     <tbody>
       <% @workload_groups.each do |group| %>
         <tr>
-          <th scope="row" style="white-space: nowrap;"><%= group.title %></th>
+          <th scope="row"><%= group.title %></th>
           <%= f.fields_for :points, @form.points.select { |point| point.workload_group_id == group.id }.sort_by(&:date) do |point| %>
-            <td style="max-width: 150px;">
+            <td class="workload-points__td--date-column">
               <%= point.hidden_field :date, value: point.object.date %>
               <%= point.hidden_field :workload_group_id, value: point.object.workload_group_id %>
-              <%= point.text_field :value, value: point.object.value, style: 'width: 80%; margin: auto;' %>
+              <%= point.text_field :value, value: point.object.value, inputmode: 'numeric', pattern: '\d*', class: 'workload-points__input--value' %>
             </td>
           <% end %>
         </tr>
