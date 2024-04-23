@@ -15,6 +15,9 @@ class PackageGenerator < Rails::Generators::NamedBase
     package_commands_path = "#{package_app_path}/commands/#{@package_name}"
     package_queries_path = "#{package_app_path}/queries/#{@package_name}"
     package_domains_path = "#{package_app_path}/domains/#{@package_name}"
+    package_assets_path = "#{package_app_path}/assets"
+    package_assets_stylesheets_path = "#{package_assets_path}/stylesheets"
+    package_assets_javascripts_path = "#{package_assets_path}/javascripts"
 
     empty_directory package_path
     empty_directory package_lib_path
@@ -26,6 +29,9 @@ class PackageGenerator < Rails::Generators::NamedBase
     empty_directory package_commands_path
     empty_directory package_queries_path
     empty_directory package_domains_path
+    empty_directory package_assets_path
+    empty_directory package_assets_stylesheets_path
+    empty_directory package_assets_javascripts_path
 
     create_file "#{package_lib_path}/#{@package_name}/.keep"
     create_file "#{package_models_path}/.keep"
@@ -35,6 +41,8 @@ class PackageGenerator < Rails::Generators::NamedBase
     create_file "#{package_commands_path}/.keep"
     create_file "#{package_queries_path}/.keep"
     create_file "#{package_domains_path}/.keep"
+    create_file "#{package_assets_stylesheets_path}/.keep"
+    create_file "#{package_assets_javascripts_path}/.keep"
 
     create_file "#{package_path}/package.yml"
 
