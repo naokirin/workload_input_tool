@@ -11,13 +11,7 @@ module Workload
         end
 
         def points_attributes=(attributes)
-          self.points ||= attributes.map { |attrs| Wokload::Point.new(attrs) }
-        end
-
-        def save!
-          Workload::Point.transaction do
-            self.points.each(&:save!)
-          end
+          self.points ||= attributes.map { |attrs| Workload::Point.new(attrs) }
         end
       end
     end

@@ -3,49 +3,36 @@
 module Workload
   class PointsController < ApplicationController
     def index
-      month = params[:month].presence
-      current = Time.zone.now
-      target_month = (current.beginning_of_month..current.end_of_month)
-      if month.present?
-        beginning_of_month = "#{month}-01".to_date
-        if beginning_of_month.future?
-          beginning_of_month = current
-        end
-        target_month = (beginning_of_month.beginning_of_month..beginning_of_month.end_of_month)
-      end
-
-      points = Workload::Point.where(
-        user_account_id: current_user_account.id,
-        date: target_month
+      range = date_range
+      points = Workload::BuildUserPointsForEachGroupsUsecase.call(
+        user_id: current_user_account.id, date_range: range
       )
 
-      build_form(points, target_month)
-
-      @month_range = (target_month.begin.to_datetime..target_month.end.to_datetime)
-      @workload_groups = Workload::Group.all
+      @form = Workload::Forms::Points::Form.new(points)
+      @date_range = (range.begin.to_datetime..range.end.to_datetime)
+      @workload_groups = Workload::GroupRepository.get_all
     end
 
     def create
-      points = permitted_updating_params[:points_attributes]&.values&.map do |params|
-        point = Workload::Point.find_or_initialize_by(
-          user_account_id: current_user_account.id,
-          workload_group_id: params[:workload_group_id],
-          date: params[:date]
-        )
-        point.value = params[:value]
-        point
-      end
+      attributes_list = permitted_updating_params[:points_attributes]&.values
+      return redirect_to workload_points_path, alert: '入力内容に誤りがあります' if attributes_list.blank?
 
-      build_form(points, (points.first.date.beginning_of_month..points.first.date.end_of_month))
+      first_date = attributes_list.first[:date].to_date
+      @date_range = first_date.beginning_of_month..first_date.end_of_month
+      @workload_groups = Workload::GroupRepository.get_all
+      points = AssignOrBuildUserPointsUsecase.call(
+        user_id: current_user_account.id,
+        date_range: @date_range,
+        attributes_list: attributes_list
+      )
+      @form = Workload::Forms::Points::Form.new(points)
 
-      if @form.points.all?(&:valid?)
-        Workload::Point.transaction do
-          @form.save!
-        end
-        if points.first.date.beginning_of_month == Time.zone.now.beginning_of_month
+      saved = Workload::SaveUserPointsUsecase.call(points: @form.points)
+      if saved
+        if @date_range.begin == Time.zone.now.beginning_of_month
           redirect_to workload_points_path, notice: '工数を更新しました！'
         else
-          redirect_to workload_points_path(month: points.first.date.beginning_of_month.strftime('%Y-%m')), notice: '工数を更新しました！'
+          redirect_to workload_points_path(month: @date_range.begin.strftime('%Y-%m')), notice: '工数を更新しました！'
         end
       else
         flash[:alert] = '入力内容に誤りがあります'
@@ -55,29 +42,22 @@ module Workload
 
     private
 
-    def build_form(points, target_month)
-      @points = []
-      workload_groups = Workload::Group.all
-      (target_month.begin.to_datetime..target_month.end.to_datetime).each do |date|
-        workload_groups.each do |group|
-          point = points.find { |point| point.date == date && point.workload_group_id == group.id }
-          if point.nil?
-            @points << Workload::Point.new(
-              user_account_id: current_user_account.id,
-              date: date,
-              workload_group_id: group.id
-            )
-          else
-            @points << point
-          end
-        end
+    def date_range
+      month = params[:month].presence
+      current = Time.zone.now
+      range = (current.beginning_of_month..current.end_of_month)
+      if month.present?
+        beginning_of_month = "#{month}-01".to_date
+        beginning_of_month = current if beginning_of_month.future?
+        range = beginning_of_month.beginning_of_month..beginning_of_month.end_of_month
       end
 
-      @form = Workload::Forms::Points::Form.new(@points)
+      range
     end
 
     def permitted_updating_params
-      params.require(:workload_forms_points_form).permit(points_attributes: %i[workload_group_id date value])
+      params.require(:workload_forms_points_form)
+            .permit(points_attributes: %i[workload_group_id date value])
     end
   end
 end

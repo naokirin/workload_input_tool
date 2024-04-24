@@ -5,13 +5,13 @@
 <% 12.times.map { |i| Date.current.beginning_of_month - i.months }.each do |month| %>
   <%= link_to month.strftime('%Y年%-m月'), workload_points_path(month: month.strftime('%Y-%m')) %>
 <% end %>
-<h1><%= @month_range.begin.strftime('%Y年%-m月') %>の工数</h1>
+<h1><%= @date_range.begin.strftime('%Y年%-m月') %>の工数</h1>
 <%= form_with model: @form ,url: workload_points_path, local: false, method: :post, turbo: true, data: { turbo_method: :post } do |f| %>
   <table class="workload-points__table">
     <thead>
       <tr>
         <th scope="col" class="workload-points__th--group-column"></th>
-        <% @month_range.each do |date| %>
+        <% @date_range.each do |date| %>
           <th scope="col" class="workload-points__th--date-column"><%= date.strftime('%m/%d') %></th>
         <% end %>
       </tr>
