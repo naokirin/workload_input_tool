@@ -49,14 +49,14 @@ class PackageGenerator < Rails::Generators::NamedBase
 
     create_file "#{package_path}/package.yml"
 
-    spec_lib_path = "spec/packages/#{@package_name}/lib/#{@package_name}"
-    spec_models_path = "spec/packages/#{@package_name}/models/#{@package_name}"
-    spec_requests_path = "spec/packages/#{@package_name}/requests/#{@package_name}"
-    spec_usecases_path = "spec/packages/#{@package_name}/usecases/#{@package_name}"
-    spec_commands_path = "spec/packages/#{@package_name}/commands/#{@package_name}"
-    spec_queries_path = "spec/packages/#{@package_name}/queries/#{@package_name}"
-    spec_domains_path = "spec/packages/#{@package_name}/domains/#{@package_name}"
-    spec_public_path = "spec/packages/#{@package_name}/public/#{@package_name}"
+    spec_lib_path = "packages/#{@package_name}/spec/lib/#{@package_name}"
+    spec_models_path = "packages/#{@package_name}/spec/models/#{@package_name}"
+    spec_requests_path = "packages/#{@package_name}/spec/requests/#{@package_name}"
+    spec_usecases_path = "packages/#{@package_name}/spec/usecases/#{@package_name}"
+    spec_commands_path = "packages/#{@package_name}/spec/commands/#{@package_name}"
+    spec_queries_path = "packages/#{@package_name}/spec/queries/#{@package_name}"
+    spec_domains_path = "packages/#{@package_name}/spec/domains/#{@package_name}"
+    spec_public_path = "packages/#{@package_name}/spec/public/#{@package_name}"
 
     empty_directory spec_lib_path
     empty_directory spec_models_path
