@@ -11,19 +11,32 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.1].define(version: 2024_04_21_100957) do
-  create_table "user_accounts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "name", default: "", null: false
-    t.string "email"
+  create_table "user_account_database_authentications", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_accounts_id"
+    t.string "email", null: false
+    t.string "encrypted_password", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_user_account_database_authentications_on_email", unique: true
+    t.index ["user_accounts_id"], name: "idx_on_user_accounts_id_5d446dc799", unique: true
+  end
+
+  create_table "user_account_registrations", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "confirmation_token", null: false
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
     t.string "unconfirmed_email"
-    t.string "encrypted_password", null: false
+    t.string "email"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["confirmation_token"], name: "index_user_accounts_on_confirmation_token", unique: true
-    t.index ["email"], name: "index_user_accounts_on_email", unique: true
-    t.index ["unconfirmed_email"], name: "index_user_accounts_on_unconfirmed_email", unique: true
+    t.index ["confirmation_token"], name: "index_user_account_registrations_on_confirmation_token", unique: true
+    t.index ["unconfirmed_email"], name: "index_user_account_registrations_on_unconfirmed_email", unique: true
+  end
+
+  create_table "user_accounts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name", default: "", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "workload_groups", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -36,7 +49,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_21_100957) do
   create_table "workload_points", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "workload_group_id", null: false
     t.bigint "user_account_id", null: false
-    t.integer "value"
+    t.integer "value", null: false
     t.date "date", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -44,6 +57,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_21_100957) do
     t.index ["workload_group_id"], name: "index_workload_points_on_workload_group_id"
   end
 
+  add_foreign_key "user_account_database_authentications", "user_accounts", column: "user_accounts_id"
   add_foreign_key "workload_points", "user_accounts"
   add_foreign_key "workload_points", "workload_groups"
 end
