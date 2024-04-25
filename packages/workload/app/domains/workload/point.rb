@@ -14,7 +14,7 @@ module Workload
     def self.from_record(record)
       self.new(
         id: record.id,
-        user_account: User::Query::AccountQuery.get_account(record.user_account_id),
+        user_account: User::Query::GetAccountQuery.call(record.user_account_id),
         workload_group: record.workload_group,
         date: record.date,
         value: record.value
@@ -34,7 +34,7 @@ module Workload
     end
 
     def user_account_id=(id)
-      self.user_account = User::Query::AccountQuery.get_account(id)
+      self.user_account = User::Query::GetAccountQuery.call(id)
     end
 
     def to_hash

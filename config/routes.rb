@@ -11,6 +11,7 @@ Rails.application.routes.draw do
 
   namespace :workload do
     resources :points, only: %i[index create]
+    resources :aggregations, only: %i[index]
   end
 
   mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?

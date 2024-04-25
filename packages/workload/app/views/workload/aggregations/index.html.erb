@@ -1,0 +1,34 @@
+<%= content_for :css do %>
+  <%= stylesheet_link_tag 'workload_points_index', 'data-turbo-track': 'reload' %>
+<% end %>
+
+<% 12.times.map { |i| Date.current.beginning_of_month - i.months }.each do |month| %>
+  <%= link_to month.strftime('%Y年%-m月'), workload_aggregations_path(month: month.strftime('%Y-%m')) %>
+<% end %>
+<h1><%= @date_range.begin.strftime('%Y年%-m月') %>の工数</h1>
+
+<% @points.each do |points| %>
+  <h2><%= points[:user_account].name %></h2>
+  <table class="workload-points__table">
+    <thead>
+    <tr>
+      <th scope="col" class="workload-points__th--group-column"></th>
+      <% @date_range.each do |date| %>
+        <th scope="col" class="workload-points__th--date-column"><%= date.strftime('%m/%d') %></th>
+      <% end %>
+    </tr>
+    </thead>
+    <tbody>
+    <% @workload_groups.each do |group| %>
+      <tr>
+        <th scope="row"><%= group.title %></th>
+        <% points[:points].select { |point| point.workload_group_id == group.id }.sort_by(&:date).each do |point| %>
+          <td class="workload-points__td--date-column">
+            <%= point.value %>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+<% end %>

@@ -2,8 +2,8 @@
 
 module User
   module Query
-    module AccountQuery
-      def get_account(id)
+    module GetAccountQuery
+      def call(id)
         user_account = User::AccountRecord.find(id)
 
         return nil if user_account.nil?
@@ -15,7 +15,7 @@ module User
         )
       end
 
-      module_function :get_account
+      module_function :call
     end
   end
 end

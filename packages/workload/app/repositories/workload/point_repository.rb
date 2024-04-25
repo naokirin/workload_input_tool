@@ -3,7 +3,7 @@
 module Workload
   module PointRepository
     def get_user_points(user_account_id, date_range: nil)
-      user = User::Query::AccountQuery.get_account(user_account_id)
+      user = User::Query::GetAccountQuery.call(user_account_id)
       return nil if user.nil?
 
       conditions = { user_account_id: user_account_id }
@@ -15,7 +15,7 @@ module Workload
     end
 
     def get_user_point(user_account_id, date:, workload_group_id:)
-      user = User::Query::AccountQuery.get_account(user_account_id)
+      user = User::Query::GetAccountQuery.call(user_account_id)
       return nil if user.nil?
 
       point_record = Workload::PointRecord.find_by(
