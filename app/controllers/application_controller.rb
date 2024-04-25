@@ -6,7 +6,10 @@ class ApplicationController < ActionController::Base
   private
 
   def current_user_account
-    User::Query::Account.from_record(super)
+    user_account = super
+    return nil if user_account.nil?
+
+    User::Query::Account.from_record(user_account)
   end
 
   def set_view_paths

@@ -2,6 +2,8 @@
 
 module Workload
   class PointsController < ApplicationController
+    before_action :authenticate_user_account!
+
     def index
       range = date_range
       points = Workload::BuildUserPointsForEachGroupsUsecase.call(
