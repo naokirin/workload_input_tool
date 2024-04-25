@@ -2,9 +2,14 @@
   <%= stylesheet_link_tag 'workload_points_index', 'data-turbo-track': 'reload' %>
 <% end %>
 
-<% 12.times.map { |i| Date.current.beginning_of_month - i.months }.each do |month| %>
-  <%= link_to month.strftime('%Y年%-m月'), workload_aggregations_path(month: month.strftime('%Y-%m')) %>
-<% end %>
+<div>
+  <% 12.times.map { |i| Date.current.beginning_of_month - i.months }.each do |month| %>
+    <%= link_to month.strftime('%Y年%-m月'), workload_aggregations_path(month: month.strftime('%Y-%m')) %>
+  <% end %>
+</div>
+<div>
+  <%= link_to  'CSV出力', workload_aggregations_path(month: @date_range.begin.strftime('%Y-%m'), format: :csv) %>
+</div>
 <h1><%= @date_range.begin.strftime('%Y年%-m月') %>の工数</h1>
 
 <% @points.each do |points| %>

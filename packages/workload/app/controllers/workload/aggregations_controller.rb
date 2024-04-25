@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'csv'
+
 module Workload
   class AggregationsController < ApplicationController
     before_action :authenticate_user_account!
@@ -18,6 +20,13 @@ module Workload
       end
       @date_range = (range.begin.to_datetime..range.end.to_datetime)
       @workload_groups = Workload::GroupRepository.get_all
+
+      respond_to do |format|
+        format.html
+        format.csv do
+          send_data csv_data, filename: "工数入力#{@date_range.begin.strftime('%Y-%m')}.csv"
+        end
+      end
     end
 
     private
@@ -33,6 +42,36 @@ module Workload
       end
 
       range
+    end
+
+    def csv_data
+      CSV.generate do |csv|
+        @points.each_with_index do |points, i|
+          date_count = @date_range.count
+          # user_account.name
+          csv << [
+            points[:user_account].name,
+            *date_count.times.map { |_| nil }
+          ]
+
+          # dates
+          csv << [
+            nil,
+            *@date_range.map { |date| date.strftime('%m/%d') }
+          ]
+
+          # group.title and points
+          @workload_groups.each do |group|
+            ps = points[:points].select { |point| point.workload_group_id == group.id }.sort_by(&:date)
+            csv << [group.title ,*ps.map { |point| point.value }]
+          end
+
+          # blank line
+          if i < @points.size - 1
+            csv << (date_count + 1).times.map { |_| nil }
+          end
+        end
+      end
     end
   end
 end
