@@ -4,14 +4,15 @@ module Workload
   class SaveUserPointsUsecase
     include UsecaseCallable
 
-    def initialize(points:)
+    def initialize(point_repository:, points:)
+      @point_repository = point_repository
       @points = points
     end
 
     def call
       return false unless @points.all?(&:valid?)
 
-      Workload::PointRepository.save_points!(@points)
+      @point_repository.save_points!(@points)
     end
   end
 end

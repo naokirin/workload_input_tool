@@ -5,6 +5,7 @@ module Workload
     def index
       range = date_range
       points = Workload::BuildUserPointsForEachGroupsUsecase.call(
+        group_repository: Workload::GroupRepository,
         user_account: current_user_account, date_range: range
       )
 
@@ -21,13 +22,18 @@ module Workload
       @date_range = first_date.beginning_of_month..first_date.end_of_month
       @workload_groups = Workload::GroupRepository.get_all
       points = AssignOrBuildUserPointsUsecase.call(
+        point_repository: Workload::PointRepository,
+        group_repository: Workload::GroupRepository,
         user_account: current_user_account,
         date_range: @date_range,
         attributes_list: attributes_list
       )
       @form = Workload::Forms::Points::Form.new(points)
 
-      saved = Workload::SaveUserPointsUsecase.call(points: @form.points)
+      saved = Workload::SaveUserPointsUsecase.call(
+        point_repository: Workload::PointRepository,
+        points: @form.points
+      )
       if saved
         if @date_range.begin == Time.zone.now.beginning_of_month
           redirect_to workload_points_path, notice: '工数を更新しました！'

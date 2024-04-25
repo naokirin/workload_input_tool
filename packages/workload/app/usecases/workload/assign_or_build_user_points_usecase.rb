@@ -4,7 +4,9 @@ module Workload
   class AssignOrBuildUserPointsUsecase
     include UsecaseCallable
 
-    def initialize(user_account:, date_range:, attributes_list: nil)
+    def initialize(point_repository:, group_repository:, user_account:, date_range:, attributes_list: nil)
+      @point_repository = point_repository
+      @group_repository = group_repository
       @user_account = user_account
       @date_range = date_range
       @attributes_list = attributes_list
@@ -13,6 +15,7 @@ module Workload
     def call
       points = @attributes_list&.map do |attributes|
         persisted_point = Workload::GetUserPointUsecase.call(
+          point_repository: @point_repository,
           user_account: @user_account,
           date: attributes[:date],
           workload_group_id: attributes[:workload_group_id]
@@ -27,6 +30,7 @@ module Workload
       end
 
       Workload::BuildUserPointsForEachGroupsUsecase.call(
+        group_repository: @group_repository,
         points: points || [], user_account: @user_account, date_range: @date_range
       )
     end
