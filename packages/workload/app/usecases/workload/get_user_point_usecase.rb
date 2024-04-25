@@ -4,15 +4,15 @@ module Workload
   class GetUserPointUsecase
     include UsecaseCallable
 
-    def initialize(user_id:, date:, workload_group_id:)
-      @user_id = user_id
+    def initialize(user_account:, date:, workload_group_id:)
+      @user_account = user_account
       @date = date
       @workload_group_id = workload_group_id
     end
 
     def call
       Workload::PointRepository.get_user_point(
-        @user_id, date: @date, workload_group_id: @workload_group_id
+        @user_account.id, date: @date, workload_group_id: @workload_group_id
       )
     end
   end

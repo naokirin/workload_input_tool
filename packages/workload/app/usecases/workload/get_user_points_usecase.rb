@@ -4,14 +4,14 @@ module Workload
   class GetUserPointsUsecase
     include UsecaseCallable
 
-    def initialize(user_id:, date_range: nil)
-      @user_id = user_id
+    def initialize(user_account:, date_range: nil)
+      @user_account = user_account
       @date_range = date_range
     end
 
     def call
       Workload::PointRepository.get_user_points(
-        @user_id, date_range: @date_range
+        @user_account.id, date_range: @date_range
       )
     end
   end

@@ -5,6 +5,10 @@ class ApplicationController < ActionController::Base
 
   private
 
+  def current_user_account
+    User::Query::Account.from_record(super)
+  end
+
   def set_view_paths
     prepend_view_path(Dir.glob(Rails.root.join('packages/*/app/views')))
   end

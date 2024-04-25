@@ -5,7 +5,7 @@ module Workload
     def index
       range = date_range
       points = Workload::BuildUserPointsForEachGroupsUsecase.call(
-        user_id: current_user_account.id, date_range: range
+        user_account: current_user_account, date_range: range
       )
 
       @form = Workload::Forms::Points::Form.new(points)
@@ -21,7 +21,7 @@ module Workload
       @date_range = first_date.beginning_of_month..first_date.end_of_month
       @workload_groups = Workload::GroupRepository.get_all
       points = AssignOrBuildUserPointsUsecase.call(
-        user_id: current_user_account.id,
+        user_account: current_user_account,
         date_range: @date_range,
         attributes_list: attributes_list
       )
