@@ -46,5 +46,20 @@ module Workload
         value: value
       }
     end
+
+    def ==(other)
+      other.is_a?(self.class) &&
+        id == other.id &&
+        user_account_id == other.user_account_id &&
+        workload_group_id == other.workload_group_id &&
+        date == other.date &&
+        value == other.value
+    end
+
+    def hash
+      [self.class, id, user_account_id, workload_group_id, date, value].hash
+    end
+
+    alias_method :eql?, :==
   end
 end

@@ -3,13 +3,15 @@
 module Workload
   module GroupRepository
     def get_all
-      Workload::GroupRecord.all.map do |group|
-        Workload::Group.from_record(group)
+      Workload::GroupRecord.all.map do |record|
+        Workload::Group.from_record(record)
       end
     end
 
     def get_group(id)
-      Workload::Group.from_record(Workload::GroupRecord.find_by(id: id))
+      Workload::GroupRecord.find_by(id: id)&.then do |record|
+        Workload::Group.from_record(record)
+      end
     end
 
     module_function :get_all, :get_group

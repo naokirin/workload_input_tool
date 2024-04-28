@@ -16,5 +16,18 @@ module Workload
         description: record.description
       )
     end
+
+    def ==(other)
+      other.is_a?(self.class) &&
+        id == other.id &&
+        title == other.title &&
+        description == other.description
+    end
+
+    def hash
+      [self.class, id, title, description].hash
+    end
+
+    alias_method :eql?, :==
   end
 end

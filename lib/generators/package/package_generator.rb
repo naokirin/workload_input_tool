@@ -51,6 +51,7 @@ class PackageGenerator < Rails::Generators::NamedBase
     spec_domains_path = "packages/#{@package_name}/spec/domains/#{@package_name}"
     spec_repositories_path = "packages/#{@package_name}/spec/repositories/#{@package_name}"
     spec_public_path = "packages/#{@package_name}/spec/public/#{@package_name}"
+    spec_factories_path = "packages/#{@package_name}/spec/factories/#{@package_name}"
 
     empty_directory spec_lib_path
     empty_directory spec_models_path
@@ -59,6 +60,7 @@ class PackageGenerator < Rails::Generators::NamedBase
     empty_directory spec_domains_path
     empty_directory spec_repositories_path
     empty_directory spec_public_path
+    empty_directory spec_factories_path
 
     create_file "#{spec_lib_path}/.keep"
     create_file "#{spec_models_path}/.keep"
@@ -67,5 +69,6 @@ class PackageGenerator < Rails::Generators::NamedBase
     create_file "#{spec_domains_path}/.keep"
     create_file "#{spec_repositories_path}/.keep"
     create_file "#{spec_public_path}/.keep"
+    create_file "#{spec_factories_path}/.keep"
   end
 end

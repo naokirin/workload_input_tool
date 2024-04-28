@@ -8,6 +8,7 @@ class Workload::PointRecord < ApplicationRecord
   validates :value, numericality: { only_integer: true, greater_than_or_equal_to: 0, allow_nil: true }
   validates :date, presence: true
   validate :month_cannot_be_future
+  validates :workload_group, presence: true
 
   private
 
