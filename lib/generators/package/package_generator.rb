@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class PackageGenerator < Rails::Generators::NamedBase
-  def generate_package
+  def generate_package # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     @package_name = file_name
     package_path = "packages/#{@package_name}"
     package_app_path = "#{package_path}/app"

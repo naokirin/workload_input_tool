@@ -13,37 +13,25 @@ module Workload
 
       @form = Workload::Forms::Points::Form.new(points)
       @date_range = (range.begin.to_datetime..range.end.to_datetime)
-      @workload_groups = Workload::GroupRepository.get_all
+      @workload_groups = Workload::GroupRepository.all
     end
 
     def create
       attributes_list = permitted_updating_params[:points_attributes]&.values
       return redirect_to workload_points_path, alert: '入力内容に誤りがあります' if attributes_list.blank?
 
-      first_date = attributes_list.first[:date].to_date
-      @date_range = first_date.beginning_of_month..first_date.end_of_month
-      @workload_groups = Workload::GroupRepository.get_all
-      points = AssignOrBuildUserPointsUsecase.call(
-        point_repository: Workload::PointRepository,
-        group_repository: Workload::GroupRepository,
-        user_account: current_user_account,
-        date_range: @date_range,
-        attributes_list: attributes_list
+      @date_range = attributes_list.first[:date].to_date.all_month
+      saved = Workload::SavePointFromAttributesUsecase.call(
+        point_repository: Workload::PointRepository, group_repository: Workload::GroupRepository,
+        attributes_list:, user_account: current_user_account, date_range: @date_range
       )
-      @form = Workload::Forms::Points::Form.new(points)
 
-      saved = Workload::SaveUserPointsUsecase.call(
-        point_repository: Workload::PointRepository,
-        points: @form.points
-      )
       if saved
-        if @date_range.begin == Time.zone.now.beginning_of_month
-          redirect_to workload_points_path, notice: '工数を更新しました！'
-        else
-          redirect_to workload_points_path(month: @date_range.begin.strftime('%Y-%m')), notice: '工数を更新しました！'
-        end
+        redirect_to workload_points_path(redirected_params), notice: '工数を更新しました！'
       else
-        flash[:alert] = '入力内容に誤りがあります'
+        @workload_groups = Workload::GroupRepository.all
+        @form = Workload::Forms::Points::Form.new(points)
+        flash.now[:alert] = '入力内容に誤りがあります'
         render :index
       end
     end
@@ -53,14 +41,22 @@ module Workload
     def date_range
       month = params[:month].presence
       current = Time.zone.now
-      range = (current.beginning_of_month..current.end_of_month)
+      range = current.all_month
       if month.present?
         beginning_of_month = "#{month}-01".to_date
         beginning_of_month = current if beginning_of_month.future?
-        range = beginning_of_month.beginning_of_month..beginning_of_month.end_of_month
+        range = beginning_of_month.all_month
       end
 
       range
+    end
+
+    def redirected_params
+      if @date_range.begin == Time.zone.now.beginning_of_month
+        {}
+      else
+        { month: @date_range.begin.strftime('%Y-%m') }
+      end
     end
 
     def permitted_updating_params

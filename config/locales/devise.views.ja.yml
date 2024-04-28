@@ -141,5 +141,3 @@ ja:
       not_saved:
         one: エラーが発生したため %{resource} は保存されませんでした。
         other: "%{count} 件のエラーが発生したため %{resource} は保存されませんでした。"
-    password:
-      password_strength: "パスワードは、大文字、小文字、数字、特殊文字を含む%{count}文字以上で設定してください。"

@@ -10,7 +10,7 @@ module Workload
     attribute :description, :string
 
     def self.from_record(record)
-      self.new(
+      new(
         id: record.id,
         title: record.title,
         description: record.description
@@ -28,6 +28,6 @@ module Workload
       [self.class, id, title, description].hash
     end
 
-    alias_method :eql?, :==
+    alias eql? ==
   end
 end

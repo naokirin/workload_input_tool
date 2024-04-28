@@ -2,17 +2,17 @@
 
 require 'rails_helper'
 
-RSpec.describe "Workload::Aggregations", type: :request do
-  describe "GET /index" do
+RSpec.describe 'Workload::Aggregations', type: :request do
+  describe 'GET /index' do
     context 'when user is not signed in' do
-      it "redirect to signin page" do
+      it 'redirect to signin page' do
         get workload_aggregations_path
         expect(response).to redirect_to new_user_account_session_path
       end
     end
 
     context 'when user is signed in' do
-      it "returns http success" do
+      it 'returns http success' do
         user = create(:user_account_record)
         user.confirm
         sign_in user

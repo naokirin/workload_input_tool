@@ -11,7 +11,7 @@ module User
       attribute :email, :string
 
       def self.from_record(record)
-        self.new(
+        new(
           id: record.id,
           name: record.name,
           email: record.email

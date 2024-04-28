@@ -9,7 +9,7 @@ module User
         return nil if user_account.nil?
 
         User::Query::Account.new(
-          id: id,
+          id:,
           name: user_account.name,
           email: user_account.email
         )

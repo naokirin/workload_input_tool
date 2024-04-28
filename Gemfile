@@ -60,6 +60,8 @@ end
 group :development do
   gem 'rubocop-rails', require: false
   gem 'rubocop-rspec', require: false
+  gem 'rubocop-rspec_rails', require: false
+  gem 'rubocop-factory_bot', require: false
 
   gem 'letter_opener_web'
 

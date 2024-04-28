@@ -7,6 +7,7 @@ module Workload
         attr_accessor :points
 
         def initialize(workload_points)
+          super()
           self.points = workload_points
         end
 

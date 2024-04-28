@@ -6,8 +6,8 @@ module Workload
       user = User::Query::GetAccountQuery.call(user_account_id)
       return nil if user.nil?
 
-      conditions = { user_account_id: user_account_id }
-                     .merge(date_range.present? ? { date: date_range } : {})
+      conditions = { user_account_id: }
+                   .merge(date_range.present? ? { date: date_range } : {})
       point_records = Workload::PointRecord.where(conditions)
       point_records.map do |point_record|
         Workload::Point.from_record(point_record)
@@ -19,9 +19,9 @@ module Workload
       return nil if user.nil?
 
       point_record = Workload::PointRecord.find_by(
-        user_account_id: user_account_id,
-        date: date,
-        workload_group_id: workload_group_id
+        user_account_id:,
+        date:,
+        workload_group_id:
       )
       return nil if point_record.nil?
 

@@ -13,6 +13,6 @@ class ApplicationController < ActionController::Base
   end
 
   def set_view_paths
-    prepend_view_path(Dir.glob(Rails.root.join('packages/*/app/views')))
+    prepend_view_path(Rails.root.glob('packages/*/app/views'))
   end
 end

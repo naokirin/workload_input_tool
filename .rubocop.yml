@@ -1,5 +1,7 @@
 require:
   - rubocop-rspec
+  - rubocop-rspec_rails
+  - rubocop-factory_bot
   - rubocop-rails
 
 AllCops:
@@ -16,5 +18,22 @@ AllCops:
   TargetRubyVersion: 3.2
 
 Style/Documentation:
-  Exclude:
-    - !ruby/regexp /application_.*\.rb$/
+  Enabled: false
+
+RSpec/NestedGroups:
+  Enabled: false
+
+RSpec/MultipleExpectations:
+  Enabled: false
+
+Rails/I18nLocaleTexts:
+  Enabled: false
+
+RSpecRails/InferredSpecType:
+  Enabled: false
+
+Metrics/MethodLength:
+  Max: 20
+
+Metrics/AbcSize:
+  Max: 25

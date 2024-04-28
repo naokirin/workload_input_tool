@@ -12,7 +12,7 @@ module Workload
     attribute :value, :integer
 
     def self.from_record(record)
-      self.new(
+      new(
         id: record.id,
         user_account: User::Query::GetAccountQuery.call(record.user_account_id),
         workload_group: record.workload_group,
@@ -21,16 +21,12 @@ module Workload
       )
     end
 
-    def workload_group_id
-      workload_group.id
-    end
+    delegate :id, to: :workload_group, prefix: true
 
-    def user_account_id
-      user_account.id
-    end
+    delegate :id, to: :user_account, prefix: true
 
     def workload_group_id=(id)
-      self.workload_group = Workload::GroupRepository.get_group(id)
+      self.workload_group = Workload::GroupRepository.find(id)
     end
 
     def user_account_id=(id)
@@ -39,11 +35,11 @@ module Workload
 
     def to_hash
       {
-        id: id,
+        id:,
         user_account_id: user_account.id,
         workload_group_id: workload_group.id,
-        date: date,
-        value: value
+        date:,
+        value:
       }
     end
 
@@ -60,6 +56,6 @@ module Workload
       [self.class, id, user_account_id, workload_group_id, date, value].hash
     end
 
-    alias_method :eql?, :==
+    alias eql? ==
   end
 end

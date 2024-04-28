@@ -68,7 +68,7 @@ RSpec.configure do |config|
   # config.filter_gems_from_backtrace("gem name")
 
   config.expect_with :rspec do |c|
-    c.max_formatted_output_length = 10000
+    c.max_formatted_output_length = 10_000
   end
 
   config.include Devise::Test::IntegrationHelpers, type: :request
@@ -78,7 +78,7 @@ RSpec.configure do |config|
     DatabaseRewinder.clean_all
   end
 
-  config.after(:each) do
+  config.after do
     DatabaseRewinder.clean
   end
 
