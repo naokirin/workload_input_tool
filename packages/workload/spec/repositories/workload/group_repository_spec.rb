@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Workload::GroupRepository, type: :repository do
-  describe '.get_all' do
+  describe '.all' do
     context 'when exists no group' do
       it 'returns an empty array' do
         expect(described_class.all).to eq([])
@@ -19,7 +19,7 @@ RSpec.describe Workload::GroupRepository, type: :repository do
     end
   end
 
-  describe '.get_group' do
+  describe '.find' do
     context 'when group does not exist' do
       it 'returns nil' do
         expect(described_class.find(1)).to be_nil
