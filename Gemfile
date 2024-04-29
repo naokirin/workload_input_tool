@@ -38,6 +38,12 @@ gem "bootsnap", require: false
 gem 'sass-rails'
 
 gem 'packwerk'
+gem 'packwerk-extensions'
+
+# Avoid false negative syntax error for packwerk.
+# See https://github.com/Shopify/packwerk/issues/400
+gem 'prism', '0.24.0', require: false
+
 gem 'arproxy'
 
 gem 'devise'

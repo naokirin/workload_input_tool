@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class PackageGenerator < Rails::Generators::NamedBase
+  source_root File.expand_path('templates', __dir__)
+
   def generate_package # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     @package_name = file_name
     package_path = "packages/#{@package_name}"
@@ -41,8 +43,7 @@ class PackageGenerator < Rails::Generators::NamedBase
     create_file "#{package_public_path}/.keep"
     create_file "#{package_assets_stylesheets_path}/.keep"
     create_file "#{package_assets_javascripts_path}/.keep"
-
-    create_file "#{package_path}/package.yml"
+    copy_file 'package.yml', "#{package_path}/package.yml"
 
     spec_lib_path = "packages/#{@package_name}/spec/lib/#{@package_name}"
     spec_models_path = "packages/#{@package_name}/spec/models/#{@package_name}"
