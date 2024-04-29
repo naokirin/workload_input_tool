@@ -35,7 +35,7 @@ gem "tzinfo-data", platforms: %i[ windows jruby ]
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
 
-gem 'sass-rails'
+gem "dartsass-rails", "~> 0.5.0"
 
 gem 'packwerk'
 gem 'packwerk-extensions'
@@ -74,4 +74,3 @@ group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
 end
-
