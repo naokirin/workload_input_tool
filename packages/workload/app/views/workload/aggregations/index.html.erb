@@ -1,5 +1,5 @@
 <%= content_for :css do %>
-  <%= stylesheet_link_tag 'workload_points_index', 'data-turbo-track': 'reload' %>
+  <%= stylesheet_link_tag 'packages/workload/workload_points_index', 'data-turbo-track': 'reload' %>
 <% end %>
 
 <div>
@@ -19,7 +19,7 @@
 
 <% @points.each do |points| %>
   <h2><%= points[:user_account].name %></h2>
-  <table class="workload-points__table">
+  <table class="workload-points__table table">
     <thead>
     <tr>
       <th scope="col" class="workload-points__th--group-column"></th>

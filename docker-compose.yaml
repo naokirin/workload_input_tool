@@ -17,6 +17,7 @@ services:
       - '3306:3306'
   web:
     build: .
+    command: bash -c "rm -rf tmp/pids/server.pid && ./bin/dev"
     volumes:
       - type: bind
         source: .
