@@ -3,6 +3,11 @@
 <% end %>
 
 <div>
+  <%= link_to '工数入力 >>', workload_points_path %>
+</div>
+
+<div>
+  <h3>工数一覧</h3>
   <% 12.times.map { |i| Date.current.beginning_of_month - i.months }.each do |month| %>
     <%= link_to month.strftime('%Y年%-m月'), workload_aggregations_path(month: month.strftime('%Y-%m')) %>
   <% end %>

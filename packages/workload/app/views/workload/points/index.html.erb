@@ -2,9 +2,15 @@
   <%= stylesheet_link_tag 'workload_points_index', 'data-turbo-track': 'reload' %>
 <% end %>
 
-<% 12.times.map { |i| Date.current.beginning_of_month - i.months }.each do |month| %>
-  <%= link_to month.strftime('%Y年%-m月'), workload_points_path(month: month.strftime('%Y-%m')) %>
-<% end %>
+<div>
+  <%= link_to '工数一覧 >>', workload_aggregations_path %>
+</div>
+<div>
+  <h3>工数入力</h3>
+  <% 12.times.map { |i| Date.current.beginning_of_month - i.months }.each do |month| %>
+    <%= link_to month.strftime('%Y年%-m月'), workload_points_path(month: month.strftime('%Y-%m')) %>
+  <% end %>
+</div>
 <h1><%= @date_range.begin.strftime('%Y年%-m月') %>の工数</h1>
 <%= form_with model: @form ,url: workload_points_path, local: false, method: :post, turbo: true, data: { turbo_method: :post } do |f| %>
   <table class="workload-points__table">
