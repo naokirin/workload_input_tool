@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
+require 'rails/generators'
+
 class PackageGenerator < Rails::Generators::NamedBase
-  source_root File.expand_path('templates', __dir__)
+  source_root File.expand_path('package/templates', __dir__)
 
   def generate_package # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     @package_name = file_name

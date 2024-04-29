@@ -7,7 +7,7 @@ RSpec.describe Workload::AssignOrBuildUserPointsUsecase do
     subject(:result) do
       described_class.call(
         point_repository: Workload::PointRepository, group_repository: Workload::GroupRepository,
-        user_account: user_account, date_range: date_range, attributes_list: attributes_list
+        user_account:, date_range:, attributes_list:
       )
     end
 
@@ -23,9 +23,12 @@ RSpec.describe Workload::AssignOrBuildUserPointsUsecase do
           expect(result).to all(be_a(Workload::Point))
           expect(result).to(
             contain_exactly(
-              Workload::Point.new(id: nil, user_account:, workload_group: group, date: Time.zone.parse('2024-01-01'), value: nil),
-              Workload::Point.new(id: nil, user_account:, workload_group: group, date: Time.zone.parse('2024-01-02'), value: nil),
-              Workload::Point.new(id: nil, user_account:, workload_group: group, date: Time.zone.parse('2024-01-03'), value: nil),
+              Workload::Point.new(id: nil, user_account:, workload_group: group, date: Time.zone.parse('2024-01-01'),
+                                  value: nil),
+              Workload::Point.new(id: nil, user_account:, workload_group: group, date: Time.zone.parse('2024-01-02'),
+                                  value: nil),
+              Workload::Point.new(id: nil, user_account:, workload_group: group, date: Time.zone.parse('2024-01-03'),
+                                  value: nil)
             )
           )
         end
@@ -34,9 +37,12 @@ RSpec.describe Workload::AssignOrBuildUserPointsUsecase do
       context 'when exist attributes' do
         let(:attributes_list) do
           [
-            { user_account_id: user_account.id, workload_group_id: group.id, date: Time.zone.parse('2024-01-01'), value: 1 },
-            { user_account_id: user_account.id, workload_group_id: group.id, date: Time.zone.parse('2024-01-02'), value: 2 },
-            { user_account_id: user_account.id, workload_group_id: group.id, date: Time.zone.parse('2024-01-03'), value: 3 },
+            { user_account_id: user_account.id, workload_group_id: group.id, date: Time.zone.parse('2024-01-01'),
+              value: 1 },
+            { user_account_id: user_account.id, workload_group_id: group.id, date: Time.zone.parse('2024-01-02'),
+              value: 2 },
+            { user_account_id: user_account.id, workload_group_id: group.id, date: Time.zone.parse('2024-01-03'),
+              value: 3 }
           ]
         end
 
@@ -44,9 +50,12 @@ RSpec.describe Workload::AssignOrBuildUserPointsUsecase do
           expect(result).to all(be_a(Workload::Point))
           expect(result).to(
             contain_exactly(
-              Workload::Point.new(id: nil, user_account:, workload_group: group, date: Time.zone.parse('2024-01-01'), value: 1),
-              Workload::Point.new(id: nil, user_account:, workload_group: group, date: Time.zone.parse('2024-01-02'), value: 2),
-              Workload::Point.new(id: nil, user_account:, workload_group: group, date: Time.zone.parse('2024-01-03'), value: 3),
+              Workload::Point.new(id: nil, user_account:, workload_group: group, date: Time.zone.parse('2024-01-01'),
+                                  value: 1),
+              Workload::Point.new(id: nil, user_account:, workload_group: group, date: Time.zone.parse('2024-01-02'),
+                                  value: 2),
+              Workload::Point.new(id: nil, user_account:, workload_group: group, date: Time.zone.parse('2024-01-03'),
+                                  value: 3)
             )
           )
         end
@@ -69,10 +78,13 @@ RSpec.describe Workload::AssignOrBuildUserPointsUsecase do
           expect(result).to all(be_a(Workload::Point))
           expect(result).to(
             contain_exactly(
-              Workload::Point.new(id: workload_point.id, user_account:, workload_group: group, date: Time.zone.parse('2024-01-01'), value: 1),
-              Workload::Point.new(id: nil, user_account:, workload_group: group, date: Time.zone.parse('2024-01-02'), value: nil),
-              Workload::Point.new(id: nil, user_account:, workload_group: group, date: Time.zone.parse('2024-01-03'), value: nil),
-              )
+              Workload::Point.new(id: workload_point.id, user_account:, workload_group: group,
+                                  date: Time.zone.parse('2024-01-01'), value: 1),
+              Workload::Point.new(id: nil, user_account:, workload_group: group, date: Time.zone.parse('2024-01-02'),
+                                  value: nil),
+              Workload::Point.new(id: nil, user_account:, workload_group: group, date: Time.zone.parse('2024-01-03'),
+                                  value: nil)
+            )
           )
         end
       end
@@ -80,9 +92,12 @@ RSpec.describe Workload::AssignOrBuildUserPointsUsecase do
       context 'when user has points' do
         let(:attributes_list) do
           [
-            { user_account_id: user_account.id, workload_group_id: group.id, date: Time.zone.parse('2024-01-01'), value: 10 },
-            { user_account_id: user_account.id, workload_group_id: group.id, date: Time.zone.parse('2024-01-02'), value: 2 },
-            { user_account_id: user_account.id, workload_group_id: group.id, date: Time.zone.parse('2024-01-03'), value: 3 },
+            { user_account_id: user_account.id, workload_group_id: group.id, date: Time.zone.parse('2024-01-01'),
+              value: 10 },
+            { user_account_id: user_account.id, workload_group_id: group.id, date: Time.zone.parse('2024-01-02'),
+              value: 2 },
+            { user_account_id: user_account.id, workload_group_id: group.id, date: Time.zone.parse('2024-01-03'),
+              value: 3 }
           ]
         end
 
@@ -90,10 +105,13 @@ RSpec.describe Workload::AssignOrBuildUserPointsUsecase do
           expect(result).to all(be_a(Workload::Point))
           expect(result).to(
             contain_exactly(
-              Workload::Point.new(id: workload_point.id, user_account:, workload_group: group, date: Time.zone.parse('2024-01-01'), value: 10),
-              Workload::Point.new(id: nil, user_account:, workload_group: group, date: Time.zone.parse('2024-01-02'), value: 2),
-              Workload::Point.new(id: nil, user_account:, workload_group: group, date: Time.zone.parse('2024-01-03'), value: 3),
-              )
+              Workload::Point.new(id: workload_point.id, user_account:, workload_group: group,
+                                  date: Time.zone.parse('2024-01-01'), value: 10),
+              Workload::Point.new(id: nil, user_account:, workload_group: group, date: Time.zone.parse('2024-01-02'),
+                                  value: 2),
+              Workload::Point.new(id: nil, user_account:, workload_group: group, date: Time.zone.parse('2024-01-03'),
+                                  value: 3)
+            )
           )
         end
       end
