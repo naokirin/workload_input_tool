@@ -1,0 +1,83 @@
+name: Run test and lint
+
+on:
+  push:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_ROOT_HOST: '%'
+        ports:
+          - 3306:3306
+        options: --health-cmd "mysqladmin ping -h 127.0.0.1" --health-interval 20s --health-timeout 10s --health-retries 10
+
+    steps:
+      - name: Checkout from repository
+        uses: actions/checkout@v4
+
+      - name: Setup Ruby version
+        uses: ruby/setup-ruby@v1.175.1
+
+      - name: bundle install
+        run: |
+          bundle install --jobs 4 --retry 3
+
+      - name: Setup database
+        env:
+          RAILS_ENV: test
+        run: |
+          cp config/database.ci.yml config/database.yml
+          bundle exec rake db:create
+          bundle exec rake db:migrate
+
+      - name: Run tests
+        run: |
+          bundle exec rails spec
+        env:
+          RAILS_ENV: test
+
+  lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout from repository
+        uses: actions/checkout@v4
+
+      - name: Setup Ruby version
+        uses: ruby/setup-ruby@v1.175.1
+
+      - name: bundle install
+        run: |
+          bundle install --jobs 4 --retry 3
+
+      - name: Run rubocop
+        run: |
+          bundle exec rubocop
+        env:
+          RAILS_ENV: development
+
+  packwerk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout from repository
+        uses: actions/checkout@v4
+
+      - name: Setup Ruby version
+        uses: ruby/setup-ruby@v1.175.1
+
+      - name: bundle install
+        run: |
+          bundle install --jobs 4 --retry 3
+
+      - name: Check packwerk
+        run: |
+          bundle exec packwerk check
+        env:
+          RAILS_ENV: development
