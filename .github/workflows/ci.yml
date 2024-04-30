@@ -25,6 +25,8 @@ jobs:
         uses: ruby/setup-ruby@v1.175.1
 
       - name: bundle install
+        env:
+          RAILS_ENV: test
         run: |
           bundle install --jobs 4 --retry 3
 
@@ -36,11 +38,17 @@ jobs:
           bundle exec rake db:create
           bundle exec rake db:migrate
 
-      - name: Run tests
-        run: |
-          bundle exec rails spec
+      - name: Setup assets
         env:
           RAILS_ENV: test
+        run: |
+          bundle exec rake dartsass:build
+
+      - name: Run tests
+        env:
+          RAILS_ENV: test
+        run: |
+          bundle exec rails spec
 
   lint:
     runs-on: ubuntu-latest

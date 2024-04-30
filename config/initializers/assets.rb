@@ -16,11 +16,17 @@ Rails.application.config.assets.precompile += Dir.glob("packages/*/app/assets/bu
     !File.basename(path).start_with?('_')
 end.map {|p| p.gsub(/\.s?(js)(\.erb|)$/, '.\1').gsub(/packages\/[^\/]+\/app\/assets\/[^\/]+\//, '') }
 
-Rails.application.config.dartsass.load_paths = Dir.glob("packages/*/app/assets/stylesheets/").map do |path|
+Rails.application.config.dartsass.load_paths = Dir.glob("app/assets/stylesheets/").map do |path|
+  Rails.root.join(path)
+end
+Rails.application.config.dartsass.load_paths += Dir.glob("packages/*/app/assets/stylesheets/").map do |path|
   Rails.root.join(path)
 end
 
-Rails.application.config.dartsass.builds = Dir.glob("packages/*/app/assets/stylesheets/*.scss").map do |path|
+Rails.application.config.dartsass.builds = Dir.glob("app/assets/stylesheets/*.scss").map do |path|
+  [File.join('../../../',  path), "#{File.basename(path, '.scss')}.css"]
+end.to_h
+Rails.application.config.dartsass.builds.merge!(Dir.glob("packages/*/app/assets/stylesheets/*.scss").map do |path|
   package_path = path.match(/packages\/[^\/]+/)[0]
   [File.join('../../../', path), File.join(package_path, "#{File.basename(path, '.scss')}.css")]
-end.to_h
+end.to_h)
