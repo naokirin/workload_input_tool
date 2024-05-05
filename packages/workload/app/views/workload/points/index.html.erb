@@ -2,42 +2,60 @@
   <%= stylesheet_link_tag 'packages/workload/workload_points_index', 'data-turbo-track': 'reload' %>
 <% end %>
 
-<div>
-  <%= link_to '工数一覧 >>', workload_aggregations_path %>
-</div>
-<div>
-  <h3>工数入力</h3>
-  <% 12.times.map { |i| Date.current.beginning_of_month - i.months }.each do |month| %>
-    <%= link_to month.strftime('%Y年%-m月'), workload_points_path(month: month.strftime('%Y-%m')) %>
-  <% end %>
-</div>
-<h1><%= @date_range.begin.strftime('%Y年%-m月') %>の工数</h1>
-<%= form_with model: @form ,url: workload_points_path, local: false, method: :post, turbo: true, data: { turbo_method: :post } do |f| %>
-  <table class="workload-points__table">
-    <thead>
-      <tr>
-        <th scope="col" class="workload-points__th--group-column"></th>
-        <% @date_range.each do |date| %>
-          <th scope="col" class="workload-points__th--date-column"><%= date.strftime('%m/%d') %></th>
+<div class="block">
+  <div class="dropdown is-hoverable">
+    <div class="dropdown-trigger">
+      <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+        <span>月選択</span>
+        <span class="icon is-small">
+            <i class="fas fa-angle-down" aria-hidden="true"></i>
+          </span>
+      </button>
+    </div>
+    <div class="dropdown-menu" id="dropdown-menu" role="menu">
+      <div class="dropdown-content">
+        <% 12.times.map { |i| Date.current.beginning_of_month - i.months }.each do |month| %>
+          <%= link_to month.strftime('%Y年%-m月'), workload_points_path(month: month.strftime('%Y-%m')), class: "dropdown-item" %>
         <% end %>
-      </tr>
-    </thead>
-    <tbody>
-      <% @workload_groups.each do |group| %>
-        <tr>
-          <th scope="row"><%= group.title %></th>
-          <%= f.fields_for :points, @form.points.select { |point| point.workload_group_id == group.id }.sort_by(&:date) do |point| %>
-            <td class="workload-points__td--date-column">
-              <%= point.hidden_field :date, value: point.object.date %>
-              <%= point.hidden_field :workload_group_id, value: point.object.workload_group_id %>
-              <%= point.text_field :value, value: point.object.value, inputmode: 'numeric', pattern: '\d*', class: 'workload-points__input--value' %>
-            </td>
-          <% end %>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-  <div>
-    <%= f.submit "保存" %>
+      </div>
+    </div>
   </div>
-<% end %>
+</div>
+<div class="block">
+  <h1 class="title"><%= @date_range.begin.strftime('%Y年%-m月') %>の工数</h1>
+  <div class="panel">
+    <%= form_with model: @form ,url: workload_points_path, local: false, method: :post, turbo: true, data: { turbo_method: :post } do |f| %>
+      <div class="table-container">
+        <div class="panel-block">
+          <table class="workload-points__table table is-hoverable is-fullwidth">
+            <thead>
+            <tr>
+              <th scope="col" class="workload-points__th--group-column"></th>
+              <% @date_range.each do |date| %>
+                <th scope="col"><%= date.strftime('%m/%d') %></th>
+              <% end %>
+            </tr>
+            </thead>
+            <tbody>
+              <% @workload_groups.each do |group| %>
+                <tr>
+                  <th scope="row"><%= group.title %></th>
+                  <%= f.fields_for :points, @form.points.select { |point| point.workload_group_id == group.id }.sort_by(&:date) do |point| %>
+                    <td class="workload-points__td--input-column">
+                      <%= point.hidden_field :date, value: point.object.date %>
+                      <%= point.hidden_field :workload_group_id, value: point.object.workload_group_id %>
+                      <%= point.text_field :value, value: point.object.value, inputmode: 'numeric', pattern: '\d*', class: 'workload-points__input--value' %>
+                    </td>
+                  <% end %>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="panel-block">
+        <%= f.submit "保存", class: "button is-link" %>
+      </div>
+    <% end %>
+  </div>
+</div>

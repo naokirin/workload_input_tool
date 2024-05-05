@@ -6,28 +6,56 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css"
+    >
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/css/all.min.css"
+    >
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= yield :css %>
     <%= javascript_importmap_tags %>
-    <!--<link rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css"
-    >-->
   </head>
 
   <body>
-    <header style="margin-top:30px;">
-      <nav>
-        <% if user_account_signed_in? %>
-          <p>ログインユーザー: <strong><%= current_user_account.email %></strong>.</p>
-          <%= link_to "ログアウト", destroy_user_account_session_path, method: :delete, turbo: true, data: { turbo_method: :delete} %>
-        <% else %>
-          <%= link_to "新規登録", new_user_account_registration_path	%> |
-          <%= link_to "ログイン", new_user_account_session_path %>
-        <% end %>
+    <header>
+      <nav class="navbar is-link" role="navigation" aria-label="main navigation">
+        <input id="menu-switch" name="menu-switch" type="checkbox"/>
+        <div class="navbar-brand">
+          <a class="navbar-item" href="/"><strong>工数入力ツール</strong></a>
+          <label for="menu-switch" class="navbar-burger" role="button" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </label>
+        </div>
+        <div class="navbar-menu">
+          <div class="navbar-start">
+            <%= link_to '工数入力', workload_points_path, class: "navbar-item" %>
+            <%= link_to '工数一覧', workload_aggregations_path, class: "navbar-item" %>
+          </div>
+
+          <div class="navbar-end">
+            <div class="navbar-item">
+              <div class="buttons">
+                <% if user_account_signed_in? %>
+                  <p><strong class="has-text-white"><%= current_user_account.email %></strong></p>
+                  <%= link_to "ログアウト", destroy_user_account_session_path, method: :delete, turbo: true, data: { turbo_method: :delete}, class: "button is-light" %>
+                <% else %>
+                  <%= link_to "新規登録", new_user_account_registration_path, class: "button is-light"	%> |
+                  <%= link_to "ログイン", new_user_account_session_path, class: "button is-primary" %>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
       </nav>
     </header>
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
-    <%= yield %>
+    <div class="content-body">
+      <%= yield %>
+    </div>
   </body>
 </html>
