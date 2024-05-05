@@ -1,5 +1,32 @@
-<h1>工数入力ツール</h1>
-<% if user_account_signed_in? %>
-  <%= link_to '工数入力', workload_points_path %>
-  <%= link_to '工数一覧', workload_aggregations_path %>
-<% end %>
+<div class="block">
+  <h1 class="title">工数入力ツール</h1>
+</div>
+<div class="block">
+  <% if user_account_signed_in? %>
+    <div class="card">
+      <div class="card-content">
+        <div class="content">
+          <div class="block">
+            <%= link_to '工数入力する', workload_points_path, class: "subtitle has-text-link" %>
+          </div>
+          <div class="block">
+            <%= link_to '工数一覧を確認する', workload_aggregations_path, class: "subtitle has-text-link" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% else %>
+    <div class="card">
+      <div class="card-content">
+        <div class="content">
+          <div class="block">
+            <%= link_to 'ログイン', new_user_account_session_path, class: "subtitle has-text-link" %>
+          </div>
+          <div class="block">
+            <%= link_to '新規登録', new_user_account_registration_path, class: "subtitle has-text-link" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

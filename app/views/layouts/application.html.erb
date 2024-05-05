@@ -52,8 +52,22 @@
         </div>
       </nav>
     </header>
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
+    <% if notice.present? %>
+      <div id="notification-notice" class="notification is-info">
+        <input id="notification-notice-switch" name="notification-notice-switch" type="checkbox"/>
+        <label for="notification-notice-switch" class="delete is-medium" role="button" aria-expanded="false">
+        </label>
+        <p class="notice"><%= notice %></p>
+      </div>
+    <% end %>
+    <% if alert.present? %>
+      <div id="notification-alert" class="notification is-danger">
+        <input id="notification-alert-switch" name="notification-alert-switch" type="checkbox"/>
+        <label for="notification-alert-switch" class="delete is-medium" role="button" aria-expanded="false">
+        </label>
+        <p class="alert"><%= alert %></p>
+      </div>
+    <% end %>
     <div class="content-body">
       <%= yield %>
     </div>

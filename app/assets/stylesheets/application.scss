@@ -21,3 +21,27 @@
 #menu-switch:checked ~ .navbar-menu{
   display: block;
 }
+
+#notification-notice-switch {
+  display: none;
+}
+#notification-notice:has(#notification-notice-switch:checked) {
+  display: none;
+}
+#notification-notice:has(:not(#notification-notice-switch:checked)) {
+  .delete {
+    top: auto;
+  }
+}
+
+#notification-alert-switch {
+  display: none;
+}
+#notification-alert:has(#notification-alert-switch:checked) {
+  display: none;
+}
+#notification-alert:has(:not(#notification-alert-switch:checked)) {
+  .delete {
+    top: auto;
+  }
+}
