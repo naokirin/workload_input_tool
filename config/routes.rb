@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :user_accounts, singular: :user_account, class_name: 'User::AccountRecord'
+  devise_for :user_accounts, singular: :user_account, module: 'user', class_name: 'User::AccountRecord'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
