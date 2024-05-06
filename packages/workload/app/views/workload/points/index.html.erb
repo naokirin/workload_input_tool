@@ -23,6 +23,13 @@
 </div>
 <div class="block">
   <h1 class="title"><%= @date_range.begin.strftime('%Y年%-m月') %>の工数</h1>
+  <div class="block">
+    <% if @amount_per_day.any? { |amount| !amount[:validation] } %>
+      <p class="is-size-5 has-text-danger">工数入力に過不足があります</p>
+    <% else %>
+      <p class="is-size-5 has-text-success">工数入力に過不足はありません</p>
+    <% end %>
+  </div>
   <div class="panel">
     <%= form_with model: @form ,url: workload_points_path, local: false, method: :post, turbo: true, data: { turbo_method: :post } do |f| %>
       <div class="table-container">
@@ -37,6 +44,16 @@
             </tr>
             </thead>
             <tbody>
+              <tr>
+                <th scope="row">合計</th>
+                <% @amount_per_day.each do |amount| %>
+                  <td>
+                    <p class="has-text-centered <%= amount[:validation] ? '' : 'has-text-danger has-text-weight-bold' %>">
+                      <%= amount[:amount] %>
+                    </p>
+                  </td>
+                <% end %>
+              </tr>
               <% @workload_groups.each do |group| %>
                 <tr>
                   <th scope="row"><%= group.title %></th>

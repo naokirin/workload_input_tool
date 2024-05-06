@@ -14,6 +14,7 @@ module Workload
       @form = Workload::Forms::Points::Form.new(points)
       @date_range = (range.begin.to_datetime..range.end.to_datetime)
       @workload_groups = Workload::GroupRepository.all
+      @amount_per_day = Workload::CalculatePointAmountPerDayUsecase.call(date_range: range, points:)
     end
 
     def create

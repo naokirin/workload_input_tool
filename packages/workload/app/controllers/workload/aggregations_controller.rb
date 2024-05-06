@@ -8,12 +8,13 @@ module Workload
       range = date_range
       user_accounts = User::Query::GetAllAccountsQuery.call
       @points = user_accounts.map do |user_account|
+        points = Workload::BuildUserPointsForEachGroupsUsecase.call(
+          group_repository: Workload::GroupRepository,
+          user_account:, date_range: range
+        )
         {
-          user_account:,
-          points: Workload::BuildUserPointsForEachGroupsUsecase.call(
-            group_repository: Workload::GroupRepository,
-            user_account:, date_range: range
-          )
+          user_account:, points:,
+          amounts: Workload::CalculatePointAmountPerDayUsecase.call(date_range: range, points:)
         }
       end
       @date_range = (range.begin.to_datetime..range.end.to_datetime)

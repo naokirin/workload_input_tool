@@ -35,7 +35,12 @@
   <div class="block">
     <div class="panel">
       <div class="panel-heading">
-        <h2><%= points[:user_account].name %></h2>
+        <h2 class="subtitle has-text-white">
+          <%= points[:user_account].name %>
+          <% if points[:amounts].any? { |amount| !amount[:validation] } %>
+            <span class="tag is-danger has-text-white ml-4">工数に過不足があります</span>
+          <% end %>
+        </h2>
       </div>
       <div class="table-container">
         <div class="panel-block">
@@ -49,6 +54,16 @@
               </tr>
             </thead>
             <tbody>
+              <tr>
+                <th scope="row">合計</th>
+                <% points[:amounts].each do |amount| %>
+                  <td>
+                    <p class="has-text-centered <%= amount[:validation] ? '' : 'has-text-danger has-text-weight-bold' %>">
+                      <%= amount[:amount] %>
+                    </p>
+                  </td>
+                <% end %>
+              </tr>
               <% @workload_groups.each do |group| %>
                 <tr>
                   <th scope="row"><%= group.title %></th>
