@@ -57,10 +57,8 @@
               <tr>
                 <th scope="row">合計</th>
                 <% points[:amounts].each do |amount| %>
-                  <td>
-                    <p class="has-text-centered <%= amount[:validation] ? '' : 'has-text-danger has-text-weight-bold' %>">
-                      <%= amount[:amount] %>
-                    </p>
+                  <td class="has-text-centered <%= amount[:validation] ? '' : 'has-text-danger has-text-weight-bold' %>">
+                    <%= amount[:amount] %>
                   </td>
                 <% end %>
               </tr>
@@ -68,7 +66,7 @@
                 <tr>
                   <th scope="row"><%= group.title %></th>
                   <% points[:points].select { |point| point.workload_group_id == group.id }.sort_by(&:date).each do |point| %>
-                    <td>
+                    <td class="has-text-centered">
                       <%= point.value %>
                     </td>
                   <% end %>

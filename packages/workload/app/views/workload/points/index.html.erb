@@ -47,10 +47,8 @@
               <tr>
                 <th scope="row">合計</th>
                 <% @amount_per_day.each do |amount| %>
-                  <td>
-                    <p class="has-text-centered <%= amount[:validation] ? '' : 'has-text-danger has-text-weight-bold' %>">
-                      <%= amount[:amount] %>
-                    </p>
+                  <td class="has-text-centered <%= amount[:validation] ? '' : 'has-text-danger has-text-weight-bold' %>">
+                    <%= amount[:amount] %>
                   </td>
                 <% end %>
               </tr>
@@ -58,7 +56,7 @@
                 <tr>
                   <th scope="row"><%= group.title %></th>
                   <%= f.fields_for :points, @form.points.select { |point| point.workload_group_id == group.id }.sort_by(&:date) do |point| %>
-                    <td class="workload-points__td--input-column">
+                    <td class="workload-points__td--input-column has-text-centered">
                       <%= point.hidden_field :date, value: point.object.date %>
                       <%= point.hidden_field :workload_group_id, value: point.object.workload_group_id %>
                       <%= point.text_field :value, value: point.object.value, inputmode: 'numeric', pattern: '\d*', class: 'workload-points__input--value' %>
