@@ -84,8 +84,9 @@ jobs:
         run: |
           bundle install --jobs 4 --retry 3
 
-      - name: Check packwerk
+      - name: Check and validate packwerk
         run: |
+          bundle exec packwerk validate
           bundle exec packwerk check
         env:
           RAILS_ENV: development

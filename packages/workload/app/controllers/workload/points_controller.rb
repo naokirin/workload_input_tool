@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Workload
-  class PointsController < ApplicationController
+  class PointsController < User::ApplicationController
     before_action :authenticate_user_account!
 
     def index

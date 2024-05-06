@@ -5,13 +5,6 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def current_user_account
-    user_account = super
-    return nil if user_account.nil?
-
-    User::Query::Account.from_record(user_account)
-  end
-
   def set_view_paths
     prepend_view_path(Rails.root.glob('packages/*/app/views'))
   end
