@@ -3,17 +3,17 @@
 <% end %>
 
 <div class="columns">
-  <div class="column is-one-quarter">
+  <div class="column is-one-third">
     <div class="dropdown is-hoverable">
       <div class="dropdown-trigger">
-        <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+        <button class="button" aria-haspopup="true" aria-controls="dropdown-menu-month">
           <span>月選択</span>
           <span class="icon is-small">
             <i class="fas fa-angle-down" aria-hidden="true"></i>
           </span>
         </button>
       </div>
-      <div class="dropdown-menu" id="dropdown-menu" role="menu">
+      <div class="dropdown-menu" id="dropdown-menu-month" role="menu">
         <div class="dropdown-content">
           <% 12.times.map { |i| Date.current.beginning_of_month - i.months }.each do |month| %>
             <%= link_to month.strftime('%Y年%-m月'), workload_aggregations_path(month: month.strftime('%Y-%m')), class: "dropdown-item" %>
@@ -21,14 +21,39 @@
         </div>
       </div>
     </div>
+    <div class="dropdown is-hoverable">
+      <div class="dropdown-trigger">
+        <button class="button" aria-haspopup="true" aria-controls="dropdown-menu-team">
+          <span>チーム選択</span>
+          <span class="icon is-small">
+            <i class="fas fa-angle-down" aria-hidden="true"></i>
+          </span>
+        </button>
+      </div>
+      <div class="dropdown-menu" id="dropdown-menu-team" role="menu">
+        <div class="dropdown-content">
+          <%= link_to 'すべて', workload_aggregations_path(month: params[:month]), class: 'dropdown-item' %>
+          <% @teams.each do |team| %>
+            <%= link_to team.name, workload_aggregations_path(month: params[:month], team: team.id), class: "dropdown-item" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="column is-one-quarter is-offset-half has-text-right">
+  <div class="column is-one-third is-offset-4 has-text-right">
     <%= link_to 'CSV出力', workload_aggregations_path(month: @date_range.begin.strftime('%Y-%m'), format: :csv), class: "button" %>
   </div>
 </div>
 
 <div class="block">
   <h1 class="title"><%= @date_range.begin.strftime('%Y年%-m月') %>の工数</h1>
+  <div class="mt-1">
+    <% if @team.present? %>
+      <h2 class="subtitle">Team: <%= @team.name %></h2>
+    <% else %>
+      <h2 class="subtitle">すべてのチーム</h2>
+    <% end %>
+  </div>
 </div>
 
 <% @points.each do |points| %>

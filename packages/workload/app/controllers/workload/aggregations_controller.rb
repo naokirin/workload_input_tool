@@ -6,17 +6,9 @@ module Workload
 
     def index
       range = date_range
-      user_accounts = User::Query::GetAllAccountsQuery.call
-      @points = user_accounts.map do |user_account|
-        points = Workload::BuildUserPointsForEachGroupsUsecase.call(
-          group_repository: Workload::GroupRepository,
-          user_account:, date_range: range
-        )
-        {
-          user_account:, points:,
-          amounts: Workload::CalculatePointAmountPerDayUsecase.call(date_range: range, points:)
-        }
-      end
+      @teams = User::Query::GetAllTeamsQuery.call
+      @team = @teams.find { |team| team.id == params[:team].to_i }
+      @points = points(range, team: @team)
       @date_range = (range.begin.to_datetime..range.end.to_datetime)
       @workload_groups = Workload::GroupRepository.all
 
@@ -29,6 +21,27 @@ module Workload
     end
 
     private
+
+    def points(date_range, team:)
+      all_user_accounts = User::Query::GetAllAccountsQuery.call
+      user_accounts = if team.present?
+                        all_user_accounts.select do |user_account|
+                          user_account.teams.any? { |user_team| user_team.id == team&.id }
+                        end
+                      else
+                        all_user_accounts
+                      end
+      user_accounts.map do |user_account|
+        points = Workload::BuildUserPointsForEachGroupsUsecase.call(
+          group_repository: Workload::GroupRepository,
+          user_account:, date_range:
+        )
+        {
+          user_account:, points:,
+          amounts: Workload::CalculatePointAmountPerDayUsecase.call(date_range:, points:)
+        }
+      end
+    end
 
     def date_range
       month = params[:month].presence
