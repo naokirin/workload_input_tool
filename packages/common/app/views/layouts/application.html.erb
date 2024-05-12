@@ -15,6 +15,7 @@
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= yield :css %>
     <%= javascript_importmap_tags %>
+    <%= yield :js %>
   </head>
 
   <body>
@@ -31,10 +32,13 @@
           </label>
         </div>
         <div class="navbar-menu">
-          <div class="navbar-start">
-            <%= link_to '工数入力', workload_points_path, class: "navbar-item" %>
-            <%= link_to '工数一覧', workload_aggregations_path, class: "navbar-item" %>
-          </div>
+          <% if user_account_signed_in? %>
+            <div class="navbar-start">
+              <%= link_to '工数入力', workload_points_path, class: "navbar-item" %>
+              <%= link_to '工数一覧', workload_aggregations_path, class: "navbar-item" %>
+              <%= link_to 'チーム一覧', user_teams_path, class: "navbar-item" %>
+            </div>
+          <% end %>
 
           <div class="navbar-end">
             <div class="navbar-item">

@@ -30,3 +30,7 @@ Rails.application.config.dartsass.builds.merge!(Dir.glob("packages/*/app/assets/
   package_path = path.match(/packages\/[^\/]+/)[0]
   [File.join('../../../', path), File.join(package_path, "#{File.basename(path, '.scss')}.css")]
 end.to_h)
+
+Dir.glob("packages/*/app/assets/javascripts").each do |path|
+  Rails.application.config.assets.paths << Rails.root.join(path).to_s
+end

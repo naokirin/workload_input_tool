@@ -2,6 +2,8 @@
 
 module Workload
   module GroupRepository
+    extend self
+
     def all
       Workload::GroupRecord.all.map do |record|
         Workload::Group.from_record(record)
@@ -13,7 +15,5 @@ module Workload
         Workload::Group.from_record(record)
       end
     end
-
-    module_function :all, :find
   end
 end

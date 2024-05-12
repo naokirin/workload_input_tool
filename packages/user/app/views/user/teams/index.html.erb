@@ -1,0 +1,27 @@
+<h1 class="title">チーム一覧</h1>
+
+<div class="block">
+  <div class="table-content">
+    <table class="table is-fullwidth">
+      <thead>
+        <tr>
+          <th>チーム名</th>
+          <th>メンバー数</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @teams.each do |team| %>
+          <tr>
+            <td><%= team.name %></td>
+            <td><%= team.members.size %></td>
+            <td>
+              <%= link_to '編集', user_team_path(id: team.id) %>
+              <%= link_to '削除', user_team_path(id: team.id), data: { turbo_method: :delete, turbo_confirm: '本当に削除しますか？' } %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -2,6 +2,8 @@
 
 module Workload
   module PointRepository
+    extend self
+
     def get_user_points(user_account_id, date_range: nil)
       user = User::Query::GetAccountQuery.call(user_account_id)
       return nil if user.nil?
@@ -37,7 +39,5 @@ module Workload
         end
       end
     end
-
-    module_function :get_user_points, :get_user_point, :save_points!
   end
 end

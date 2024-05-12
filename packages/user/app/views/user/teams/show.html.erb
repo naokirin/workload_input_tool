@@ -1,0 +1,62 @@
+<% content_for :css do %>
+  <%= stylesheet_link_tag 'packages/user/teams_show' %>
+<% end %>
+
+<% content_for :js do %>
+  <%= javascript_import_module_tag "user_teams_show" %>
+<% end %>
+
+<h1 class="title"><%= @team.name %>の編集</h1>
+
+<%= form_with model: @form, url: user_team_path(@team.id), data: { turbo: false }, method: :patch do |f| %>
+  <div class="field mb-5">
+    <label class="label">チーム名</label>
+    <div class="control">
+      <%= f.text_field :name, class: 'input' %>
+    </div>
+  </div>
+  <div class="block team-members--list">
+    <label class="label">チームメンバー</label>
+    <% @user_accounts.each do |user_account| %>
+      <%= f.check_box :user_accounts, { multiple: true, include_hidden: false, class: 'checkbox is-hidden' }, user_account.id, nil %>
+    <% end %>
+    <div class="box">
+      <p class="is-size-6">選択中</p>
+      <div class="block py-4">
+        <div class="columns">
+          <% @user_accounts.each do |user_account| %>
+            <div class="column is-2 selected <%= @form.user_accounts.include?(user_account.id) ? '' : 'is-hidden' %>">
+              <div class="field">
+                <%= f.label "user_accounts_#{user_account.id}", class: "checkbox" do %>
+                  <%= user_account.name %>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="box">
+      <p class="is-size-6">未選択</p>
+      <div class="block py-4">
+        <div class="columns">
+          <% @user_accounts.each do |user_account| %>
+            <div class="column is-2 unselected <%= @form.user_accounts.include?(user_account.id) ? 'is-hidden' : '' %>">
+              <div class="field">
+                <%= f.label "user_accounts_#{user_account.id}", class: 'checkbox' do %>
+                  <%= user_account.name %>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="field is-grouped mt-6">
+    <div class="control">
+      <%= f.submit '更新する', class: 'button is-link' %>
+    </div>
+  </div>
+<% end %>

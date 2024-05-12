@@ -9,6 +9,10 @@ Rails.application.routes.draw do
   # Defines the root path route ("/"
   root to: 'home#index'
 
+  namespace :user do
+    resources :teams, only: %i[index show create update destroy]
+  end
+
   namespace :workload do
     resources :points, only: %i[index create]
     resources :aggregations, only: %i[index]
