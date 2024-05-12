@@ -73,5 +73,9 @@ class PackageGenerator < Rails::Generators::NamedBase
     create_file "#{spec_repositories_path}/.keep"
     create_file "#{spec_public_path}/.keep"
     create_file "#{spec_factories_path}/.keep"
+
+    File.open('app/assets/config/manifest.js', 'a+') do |f|
+      f.puts "//= link_tree ../../../packages/#{@package_name}/app/assets/javascripts .js"
+    end
   end
 end
