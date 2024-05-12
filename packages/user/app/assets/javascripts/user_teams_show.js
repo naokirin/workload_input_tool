@@ -21,3 +21,4 @@ const load = function() {
 }
 
 document.addEventListener('DOMContentLoaded', load);
+document.addEventListener('turbolinks:load', load);

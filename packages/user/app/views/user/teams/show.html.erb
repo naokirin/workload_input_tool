@@ -3,7 +3,7 @@
 <% end %>
 
 <% content_for :js do %>
-  <%= javascript_import_module_tag "user_teams_show" %>
+  <%= javascript_tag 'import "user_teams_show"', type: 'module', data: { 'turbo-track': 'reload' } %>
 <% end %>
 
 <h1 class="title"><%= @team.name %>の編集</h1>
