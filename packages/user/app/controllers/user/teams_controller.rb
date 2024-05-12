@@ -22,15 +22,13 @@ module User
     def update
       id = params[:id]
       name = params[:user_forms_team_form][:name]
-      team_members = build_team_members(
-        user_team_id: id,
-        user_account_ids: params[:user_forms_team_form][:user_accounts].presence || []
-      )
-      if User::TeamRepository.update(id:, name:, members: team_members || [])
+      user_account_ids =  params[:user_forms_team_form][:user_accounts].presence || []
+      saved = User::UpdateTeamUsecase.call(id:, name:, user_account_ids:)
+      if saved
         redirect_to user_team_path(id), notice: 'チームを更新しました', status: :see_other
       else
         @team = User::TeamRepository.find(id:)
-        @form = User::Form::TeamForm.new(name:, user_accounts: team_members&.map(&:user_account_id) || [])
+        @form = User::Form::TeamForm.new(name:, user_accounts: user_account_ids)
         flash.now[:alert] = 'チームの更新に失敗しました'
         render :show, status: :unprocessable_entity
       end
