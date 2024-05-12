@@ -7,7 +7,7 @@ module Workload
     belongs_to :workload_group, class_name: 'Workload::GroupRecord'
 
     def user_team
-      User::Team.find(user_team_id)
+      User::Query::Team.find(user_team_id)
     end
   end
 end

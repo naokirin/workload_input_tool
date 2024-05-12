@@ -2,10 +2,10 @@
 
 module User
   module AccountRepository
-    extend self
-
     def all
       User::AccountRecord.all.map { |record| User::Account.from_record(record) }
     end
+
+    module_function :all
   end
 end

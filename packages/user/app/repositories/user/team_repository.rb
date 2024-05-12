@@ -2,8 +2,6 @@
 
 module User
   module TeamRepository
-    extend self
-
     def all
       User::TeamRecord.all.map { |record| User::Team.from_record(record) }
     end
@@ -20,10 +18,8 @@ module User
     def update(id:, name:, members: [])
       ActiveRecord::Base.transaction do
         record = User::TeamRecord.find(id)
-        record.update!(name: name)
-        record.team_members.each do |member|
-          member.destroy!
-        end
+        record.update!(name:)
+        record.team_members.each(&:destroy!)
         members.each do |member|
           record.team_members.create!(user_account_id: member.user_account_id, user_team_id: id)
         end
@@ -33,5 +29,7 @@ module User
     def destroy(id:)
       User::TeamRecord.find(id).destroy
     end
+
+    module_function :all, :find, :create, :update, :destroy
   end
 end

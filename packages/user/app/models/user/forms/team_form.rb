@@ -12,6 +12,7 @@ module User
       def user_accounts_is_integer_array
         return if user_accounts.nil?
         return if user_accounts.is_a?(Array) && user_accounts.all? { |id| id.is_a?(Integer) }
+
         errors.add(:user_accounts, 'はIDをしていしてください。')
       end
     end
