@@ -21,7 +21,7 @@
       <%= f.check_box :user_accounts, { multiple: true, include_hidden: false, class: 'checkbox is-hidden' }, user_account.id, nil %>
     <% end %>
     <div class="box">
-      <p class="is-size-6">選択中</p>
+      <p class="is-size-6 has-text-weight-bold">選択中</p>
       <div class="block py-4">
         <div class="columns">
           <% @user_accounts.each do |user_account| %>
@@ -38,7 +38,7 @@
     </div>
 
     <div class="box">
-      <p class="is-size-6">未選択</p>
+      <p class="is-size-6 has-text-weight-bold">未選択</p>
       <div class="block py-4">
         <div class="columns">
           <% @user_accounts.each do |user_account| %>
