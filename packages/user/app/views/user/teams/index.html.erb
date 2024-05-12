@@ -20,8 +20,8 @@
             <td><%= team.name %></td>
             <td><%= team.members.size %></td>
             <td>
-              <%= link_to '編集', user_team_path(id: team.id) %>
-              <%= link_to '削除', user_team_path(id: team.id), data: { turbo_method: :delete, turbo_confirm: '本当に削除しますか？' } %>
+              <%= link_to '編集', user_team_path(id: team.id), class: 'button is-small is-info' %>
+              <%= link_to '削除', user_team_path(id: team.id), data: { turbo_method: :delete, turbo_confirm: '本当に削除しますか？' }, class: 'button is-small is-outlined is-danger' %>
             </td>
           </tr>
         <% end %>

@@ -16,7 +16,7 @@ module User
 
     def create
       @team = User::TeamRepository.create
-      redirect_to user_team_path(@team.id), notice: 'チームを作成しました', status: :see_other
+      redirect_to user_team_path(@team.id, format: :html), notice: 'チームを新規作成しました', status: :see_other
     end
 
     def update
