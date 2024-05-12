@@ -1,5 +1,9 @@
 <h1 class="title">チーム一覧</h1>
 
+<div class="block has-text-right">
+  <%= link_to '新規チーム生成', user_teams_path, data: { turbo_method: :post },  class: 'button is-primary' %>
+</div>
+
 <div class="block">
   <div class="table-content">
     <table class="table is-fullwidth">
