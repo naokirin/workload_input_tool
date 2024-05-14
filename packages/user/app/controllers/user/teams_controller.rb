@@ -22,7 +22,7 @@ module User
     def update
       id = params[:id]
       name = params[:user_forms_team_form][:name]
-      user_account_ids =  params[:user_forms_team_form][:user_accounts].presence || []
+      user_account_ids = params[:user_forms_team_form][:user_accounts].presence || []
       saved = User::UpdateTeamUsecase.call(id:, name:, user_account_ids:)
       if saved
         redirect_to user_team_path(id), notice: 'チームを更新しました', status: :see_other

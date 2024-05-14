@@ -20,5 +20,6 @@ const load = function() {
     }
 }
 
+load();
 document.addEventListener('DOMContentLoaded', load);
-document.addEventListener('turbolinks:load', load);
+document.addEventListener('turbo:load', load);
